@@ -26,6 +26,9 @@ func main() {
 var wsupgrader = websocket.Upgrader{
 	ReadBufferSize:  4096,
 	WriteBufferSize: 4096,
+	CheckOrigin: func(r *http.Request) bool {
+		return true
+	},
 }
 
 func coordinate(chat string, name string, w http.ResponseWriter, r *http.Request) {
