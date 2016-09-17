@@ -26,6 +26,7 @@ func createTables(db *sql.DB) error {
         `CREATE DATABASE IF NOT EXISTS context`,
         `CREATE TABLE IF NOT EXISTS context.messages (
         channel STRING,
+		user STRING,
         msg_id INT,
         message STRING,
         timestamp TIMESTAMP,
@@ -57,8 +58,8 @@ type Message struct {
 func storeJSON(data []byte, channel string) {
     msg := parseJSON(data)
     const insertSQL = `
-INSERT INTO context.messages VALUES ($1, DEFAULT, $2, NOW())`
-    if _, err := db.Exec(insertSQL, channel, msg.Msg); err != nil {
+INSERT INTO context.messages VALUES ($1, $2, DEFAULT, $3, NOW())`
+    if _, err := db.Exec(insertSQL, channel, msg.User, msg.Msg); err != nil {
         log.Printf("insert into messages failed: %s", err)
     }
     fmt.Printf(msg.User, msg.Msg)
