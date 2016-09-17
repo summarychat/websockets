@@ -48,8 +48,8 @@ func createTables(db *sql.DB) error {
 }
 
 type Message struct {
-	User string
-	Msg  string
+	User string `json:"user"`
+	Msg  string `json:"msg"`
 }
 
 func storeJSON(json []byte, channel string) {
