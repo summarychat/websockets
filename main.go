@@ -1,14 +1,13 @@
 package websockets
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 )
 
-var hubs map[string]Hub
+var hubs map[string]*Hub
 
 func main() {
 	r := gin.Default()
@@ -19,34 +18,18 @@ func main() {
 		coordinate(chat, name, c.Writer, c.Request)
 	})
 
-	r.Run("localhost:80")
+	r.Run("0.0.0.0:80")
 }
 
 var wsupgrader = websocket.Upgrader{
-	ReadBufferSize:  1024,
-	WriteBufferSize: 1024,
-}
-
-func wshandler(w http.ResponseWriter, r *http.Request) {
-	conn, err := wsupgrader.Upgrade(w, r, nil)
-	if err != nil {
-		fmt.Printf("Failed to set websocket upgrade: %+v\n", err)
-		return
-	}
-
-	for {
-		t, msg, err := conn.ReadMessage()
-		if err != nil {
-			break
-		}
-		conn.WriteMessage(t, msg)
-	}
+	ReadBufferSize:  4096,
+	WriteBufferSize: 4096,
 }
 
 func coordinate(chat string, name string, w http.ResponseWriter, r *http.Request) {
 	hub, ok := hubs[chat]
 	if !ok {
-		hub = *newHub(chat)
+		hub = newHub(chat)
 		hubs[chat] = hub
 	}
 	hub.addUser(name, w, r)
