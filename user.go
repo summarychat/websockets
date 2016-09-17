@@ -44,7 +44,7 @@ func (user *User) write() {
 	var msg []byte
 	for {
 		msg = <-user.toSend
-		err := user.conn.WriteMessage(websocket.BinaryMessage, msg)
+		err := user.conn.WriteMessage(websocket.TextMessage, msg)
 		if err != nil {
 			break
 		}
