@@ -1,42 +1,42 @@
 package main
 
 import (
-	"net/http"
+    "net/http"
 
-	"github.com/gin-gonic/gin"
-	"github.com/gorilla/websocket"
+    "github.com/gin-gonic/gin"
+    "github.com/gorilla/websocket"
 )
 
 var hubs map[string]*Hub
 
 func main() {
-	r := gin.Default()
+    r := gin.Default()
 
-	r.GET("/:chat/:name", func(c *gin.Context) {
-		chat := c.Param("chat")
-		name := c.Param("name")
-		coordinate(chat, name, c.Writer, c.Request)
-	})
+    r.GET("/:chat/:name", func(c *gin.Context) {
+        chat := c.Param("chat")
+        name := c.Param("name")
+        coordinate(chat, name, c.Writer, c.Request)
+    })
 
-	hubs = make(map[string]*Hub)
-	initStorage()
+    hubs = make(map[string]*Hub)
+    initStorage()
 
-	r.Run("0.0.0.0:80")
+    r.Run("0.0.0.0:80")
 }
 
 var wsupgrader = websocket.Upgrader{
-	ReadBufferSize:  4096,
-	WriteBufferSize: 4096,
-	CheckOrigin: func(r *http.Request) bool {
-		return true
-	},
+    ReadBufferSize:  4096,
+    WriteBufferSize: 4096,
+    CheckOrigin: func(r *http.Request) bool {
+        return true
+    },
 }
 
 func coordinate(chat string, name string, w http.ResponseWriter, r *http.Request) {
-	hub, ok := hubs[chat]
-	if !ok {
-		hub = newHub(chat)
-		hubs[chat] = hub
-	}
-	hub.addUser(name, w, r)
+    hub, ok := hubs[chat]
+    if !ok {
+        hub = newHub(chat)
+        hubs[chat] = hub
+    }
+    hub.addUser(name, w, r)
 }
