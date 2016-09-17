@@ -27,8 +27,8 @@ func createTables(db *sql.DB) error {
         `CREATE DATABASE IF NOT EXISTS context`,
         `CREATE TABLE IF NOT EXISTS context.messages (
         channel STRING,
-		namegi STRING,
-        msg_id INT,
+		name STRING,
+        msg_id SERIAL,
         message STRING,
         timestamp TIMESTAMP,
         PRIMARY KEY (msg_id)
