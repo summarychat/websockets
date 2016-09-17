@@ -14,7 +14,8 @@ import (
 var db *sql.DB
 
 func initStorage() {
-    db, err := sql.Open("postgres", "postgres://root@localhost:26257?sslmode=disable")
+	var err error
+    db, err = sql.Open("postgres", "postgres://root@localhost:26257?sslmode=disable")
     if err != nil {
         log.Fatal(err)
     }
@@ -26,7 +27,7 @@ func createTables(db *sql.DB) error {
         `CREATE DATABASE IF NOT EXISTS context`,
         `CREATE TABLE IF NOT EXISTS context.messages (
         channel STRING,
-		name STRING,
+		namegi STRING,
         msg_id INT,
         message STRING,
         timestamp TIMESTAMP,
@@ -58,7 +59,7 @@ type Message struct {
 func storeJSON(data []byte, channel string) {
     msg := parseJSON(data)
     const insertSQL = `
-INSERT INTO context.messages VALUES ($1, $2, DEFAULT, $3, NOW())`
+INSERT INTO context.messages VALUES ($1, $2, DEFAULT, $3, NOW());`
     if _, err := db.Exec(insertSQL, channel, msg.User, msg.Msg); err != nil {
         log.Printf("insert into messages failed: %s", err)
     }
