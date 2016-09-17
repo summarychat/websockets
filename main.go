@@ -18,6 +18,8 @@ func main() {
 		coordinate(chat, name, c.Writer, c.Request)
 	})
 
+	hubs = make(map[string]*Hub)
+
 	r.Run("0.0.0.0:80")
 }
 
