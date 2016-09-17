@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"time"
 
-	_ "github.com/cockroachdb/pq"
+	_ "github.com/lib/pq"
 )
 
 var db *sql.DB
@@ -58,7 +58,7 @@ func storeJSON(json []byte, channel string) {
 	const insertSQL = `
 INSERT INTO context.messages VALUES ($1, DEFAULT, $2, NOW())`
 	if _, err := db.Exec(insertSQL, channel, msg.Msg); err != nil {
-		log.Printf("insert into photos failed: %s", err)
+		log.Printf("insert into messages failed: %s", err)
 	}
 }
 

@@ -19,6 +19,7 @@ func main() {
 	})
 
 	hubs = make(map[string]*Hub)
+	initStorage()
 
 	r.Run("0.0.0.0:80")
 }
