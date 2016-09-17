@@ -23,6 +23,7 @@ func newHub(name string) *Hub {
 func (hub *Hub) run() {
 	for {
 		msg := <-hub.broadcast
+		storeJSON(msg, hub.name)
 		for _, user := range hub.users {
 			user.toSend <- msg
 		}
