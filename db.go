@@ -71,7 +71,7 @@ INSERT INTO context.messages VALUES ($1, $2, DEFAULT, $3, NOW());`
         client := &http.Client{}
         resp, err := client.Do(req)
         if err != nil {
-            panic(err)
+            //panic(err)
         }
         defer resp.Body.Close()
     }
