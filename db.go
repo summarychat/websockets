@@ -63,7 +63,7 @@ INSERT INTO context.messages VALUES ($1, $2, DEFAULT, $3, NOW());`
         log.Printf("insert into messages failed: %s", err)
     }else{
         row, _ := cab.LastInsertId()
-        fmt.Printf(row)
+        log.Printf("%d",row)
     }
     
 }
