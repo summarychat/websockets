@@ -36,8 +36,9 @@ func createTables(db *sql.DB) error {
 	    `CREATE TABLE IF NOT EXISTS context.events (
         event_id SERIAL,
         event_type STRING,
-        msg_id INT references context.messages(msg_id),
-		index(msg_id),
+        message STRING,
+        timestamp TIMESTAMP,
+        name STRING,
         channel STRING,
         PRIMARY KEY (event_id)
     )`,
