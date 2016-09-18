@@ -31,8 +31,10 @@ func (hub *Hub) run() {
         msg := car.content
         storeJSON(msg, hub.name)
         for _, user := range hub.users {
-            fmt.Print(string(msg))
+            if user.name != car.user {
+                fmt.Print(string(msg))
                 user.toSend <- msg
+            }
         }
     }
 }
