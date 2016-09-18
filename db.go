@@ -3,7 +3,6 @@ package main
 import (
     "database/sql"
     "encoding/json"
-    "fmt"
     "log"
     "strconv"
     "time"
@@ -63,14 +62,11 @@ INSERT INTO context.messages VALUES ($1, $2, DEFAULT, $3, NOW());`
     if _, err := db.Exec(insertSQL, channel, msg.User, msg.Msg); err != nil {
         log.Printf("insert into messages failed: %s", err)
     }
-    fmt.Printf(msg.User, msg.Msg)
 }
 
 func parseJSON(data []byte) *Message {
     msg := new(Message)
     json.Unmarshal(data, msg)
-    fmt.Printf(string(data))
-    fmt.Printf(msg.User, msg.Msg)
     return msg
 }
 
