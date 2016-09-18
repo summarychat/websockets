@@ -59,9 +59,12 @@ func storeJSON(data []byte, channel string) {
     msg := parseJSON(data)
     const insertSQL = `
 INSERT INTO context.messages VALUES ($1, $2, DEFAULT, $3, NOW());`
-    if _, err := db.Exec(insertSQL, channel, msg.User, msg.Msg); err != nil {
+    if cab, err := db.Exec(insertSQL, channel, msg.User, msg.Msg); err != nil {
         log.Printf("insert into messages failed: %s", err)
+    }else{
+        log.Print(cab)
     }
+    
 }
 
 func parseJSON(data []byte) *Message {
