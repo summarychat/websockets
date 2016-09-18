@@ -30,15 +30,15 @@ func createTables(db *sql.DB) error {
 		name STRING,
         msg_id SERIAL,
         message STRING,
+        scores STRING,
         timestamp TIMESTAMP,
         PRIMARY KEY (msg_id)
     )`,
 	    `CREATE TABLE IF NOT EXISTS context.events (
-        event_id INT,
+        event_id SERIAL,
         event_type STRING,
         msg_id INT references context.messages(msg_id),
 		index(msg_id),
-        scores STRING,
         channel STRING,
         PRIMARY KEY (event_id)
     )`,

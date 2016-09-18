@@ -6,7 +6,7 @@ type User struct {
     conn         *websocket.Conn
     name         string
     hub          *Hub
-    broadcast    chan []byte
+    broadcast    chan *Carrier
     toSend       chan []byte
     disconnect   chan string
     unregistered bool
@@ -35,7 +35,10 @@ func (user *User) read() {
         if err != nil {
             break
         }
-        user.broadcast <- msg
+        car := new(Carrier)
+        car.content = msg
+        car.user = user.name
+        user.broadcast <- car
     }
     user.logout()
 }

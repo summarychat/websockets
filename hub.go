@@ -5,15 +5,20 @@ import (
     "net/http"
 )
 
+type Carrier struct {
+    content []byte
+    user string
+}
+
 type Hub struct {
     users     map[string]*User
-    broadcast chan []byte
+    broadcast chan *Carrier
     name      string
 }
 
 func newHub(name string) *Hub {
     hub := new(Hub)
-    hub.broadcast = make(chan []byte, 50)
+    hub.broadcast = make(chan *Carrier, 50)
     hub.users = make(map[string]*User)
     hub.name = name
     go hub.run()
@@ -22,10 +27,13 @@ func newHub(name string) *Hub {
 
 func (hub *Hub) run() {
     for {
-        msg := <-hub.broadcast
+        car := <-hub.broadcast
+        msg := car.content
         storeJSON(msg, hub.name)
         for _, user := range hub.users {
-            user.toSend <- msg
+            if user.name != car.user {
+                user.toSend <- msg
+            }
         }
     }
 }
