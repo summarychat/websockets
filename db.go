@@ -62,7 +62,7 @@ INSERT INTO context.messages VALUES ($1, $2, DEFAULT, $3, NOW());`
     if cab, err := db.Exec(insertSQL, channel, msg.User, msg.Msg); err != nil {
         log.Printf("insert into messages failed: %s", err)
     }else{
-        log.Print(cab.LastInsertId())
+        log.Print(cab.RowsAffected())
     }
     
 }
