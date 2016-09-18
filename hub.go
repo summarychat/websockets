@@ -31,7 +31,7 @@ func (hub *Hub) run() {
         msg := car.content
         storeJSON(msg, hub.name)
         for _, user := range hub.users {
-            fmt.Fprintf("Sending from %s to %s", car.user,user.name)
+            fmt.Printf("Sending from %v to %v", car.user,user.name)
                 user.toSend <- msg
         }
     }
