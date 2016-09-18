@@ -30,7 +30,6 @@ func createTables(db *sql.DB) error {
 		name STRING,
         msg_id SERIAL,
         message STRING,
-        scores STRING,
         timestamp TIMESTAMP,
         PRIMARY KEY (msg_id)
     )`,
@@ -70,10 +69,12 @@ INSERT INTO context.messages VALUES ($1, $2, DEFAULT, $3, NOW());`
 
         client := &http.Client{}
         resp, err := client.Do(req)
-        if err != nil {
-            //panic(err)
+        if err == nil {
+            defer resp.Body.Close()
+        }else{
+            log.Printf("Webhook failed to land: %s", err)
         }
-        defer resp.Body.Close()
+        
     }
     
 }
