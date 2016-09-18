@@ -14,6 +14,7 @@ type User struct {
 
 func makeUser(hub *Hub, name string, conn *websocket.Conn) *User {
     user := new(User)
+    user.name = name
     user.conn = conn
     user.hub = hub
     user.broadcast = hub.broadcast
