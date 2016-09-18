@@ -6,8 +6,9 @@ import (
     "log"
     "strconv"
     "time"
-
+    "net/http"
     _ "github.com/lib/pq"
+    "bytes"
 )
 
 var db *sql.DB
@@ -59,11 +60,20 @@ func storeJSON(data []byte, channel string) {
     msg := parseJSON(data)
     const insertSQL = `
 INSERT INTO context.messages VALUES ($1, $2, DEFAULT, $3, NOW());`
-    if cab, err := db.Exec(insertSQL, channel, msg.User, msg.Msg); err != nil {
+    if _, err := db.Exec(insertSQL, channel, msg.User, msg.Msg); err != nil {
         log.Printf("insert into messages failed: %s", err)
     }else{
-        row, _ := cab.LastInsertId()
-        log.Printf("%d",row)
+        url := "http://104.197.154.0/" + channel
+        req, err := http.NewRequest("POST", url, bytes.NewBuffer(data))
+        req.Header.Set("X-Custom-Header", "myvalue")
+        req.Header.Set("Content-Type", "application/json")
+
+        client := &http.Client{}
+        resp, err := client.Do(req)
+        if err != nil {
+            panic(err)
+        }
+        defer resp.Body.Close()
     }
     
 }
