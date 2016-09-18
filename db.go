@@ -38,6 +38,7 @@ func createTables(db *sql.DB) error {
         event_type STRING,
         message STRING,
         timestamp TIMESTAMP,
+        links STRING,
         name STRING,
         channel STRING,
         PRIMARY KEY (event_id)
